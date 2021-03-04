@@ -1,5 +1,5 @@
-let ExpenseController = (() => {                    //this controller handles the calculations 
-    total = 0, expenses = 0;
+let TransactionController = (() => {                    //this controller handles the calculations 
+    total = 0, expenses = 0, income = 0;
 
     return {
         inputEntry(userInput) {
@@ -37,11 +37,36 @@ let UIController = (() => {                         //this controller handles th
             let transactionHTML;
             transactionHTML = "<tr><td>" + transaction['date'] + "</td><td>" + transaction['desc'] + "</td><td>" + transaction['amount'] + "</td></tr>";
 
-            document.querySelector("#history-list").insertAdjacentHTML('beforeend', transactionHTML);
+            document.querySelector("#history-list").insertAdjacentHTML('afterbegin', transactionHTML);
         },
 
         updateBalance (total) {
             document.querySelector("#month-balance").textContent = "$ " + total;
+        },
+
+        chart (expenses = 0, income = 0) {
+            let ctx = document.querySelector("#chart");
+            let expenseChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Incomes', 'Expenses'],
+                    datasets: [{
+                        data: [income, expenses ],
+                        backgroundColor: [
+                            'rgb(48, 157, 35)',
+                            'rgb(224, 33, 30)'
+                        ],
+                        borderWidth: 0.5
+                    }]
+                },
+                options: {
+                    legend: {
+                        labels: {
+                            fontColor: 'black'
+                        }
+                    }
+                }
+            });
         }
 }})();
 
@@ -56,8 +81,9 @@ let UIController = (() => {                         //this controller handles th
 
         if (inputtransaction['desc'] !== '' && !isNaN(parseFloat(inputtransaction['amount']))) {
             UIController.displayTransaction(inputtransaction);
-            ExpenseController.inputEntry(parseFloat(inputtransaction['amount']));
-            UIController.updateBalance(ExpenseController.getTotalData());
+            TransactionController.inputEntry(parseFloat(inputtransaction['amount']));
+            UIController.updateBalance(TransactionController.getTotalData());
+            UIController.chart(TransactionController.getExpensesData(),500)
         }  
     }
 
@@ -68,4 +94,4 @@ let UIController = (() => {                         //this controller handles th
     }
 
     init();
-})(UIController, ExpenseController);
+})(UIController, TransactionController);

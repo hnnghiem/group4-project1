@@ -30,3 +30,14 @@ body {
     color: black;
     text-align: left;
 }
+.left-margin {
+    padding-left: 20px;
+}
+
+.balance {
+    position: relative;
+}
+
+.tracker {
+    position:relative;
+}
