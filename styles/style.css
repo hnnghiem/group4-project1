@@ -30,6 +30,20 @@ body {
     color: black;
     text-align: left;
 }
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.expense-row {
+    font-weight: bold;
+    color: red;
+}
+.styled-table tbody tr.income-row {
+    font-weight: bold;
+    color: green;
+}
 .left-margin {
     padding-left: 20px;
 }

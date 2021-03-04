@@ -43,7 +43,12 @@ let UIController = (() => {                         //this controller handles th
 
         displayTransaction(transaction) {
             let transactionHTML;
-            transactionHTML = "<tr><td>" + transaction['date'] + "</td><td>" + transaction['desc'] + "</td><td>" + transaction['amount'] + "</td></tr>";
+            if (this.getInputTransaction()['transtype'] == 'expense') {
+                transactionHTML = "<tr class='expense-row'><td>" + transaction['date'] + "</td><td>" + transaction['desc'] + "</td><td>" + transaction['amount'] + "</td></tr>";
+            }
+            if (this.getInputTransaction()['transtype'] == 'income') {
+                transactionHTML = "<tr class='income-row'><td>" + transaction['date'] + "</td><td>" + transaction['desc'] + "</td><td>" + transaction['amount'] + "</td></tr>";
+            }
 
             document.querySelector("#history-list").insertAdjacentHTML('afterbegin', transactionHTML);
         },
