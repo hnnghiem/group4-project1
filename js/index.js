@@ -43,7 +43,6 @@ let UIController = (() => {                         //this controller handles th
         updateBalance (total) {
             document.querySelector("#month-balance").textContent = "$ " + total;
         }
-
 }})();
 
 /* The Main Controller of the JS file */
@@ -53,23 +52,18 @@ let UIController = (() => {                         //this controller handles th
         document.querySelector('.btn-submit').addEventListener('click', addTransaction)
     };
     let addTransaction = () => {
-        console.log('Input after click event' + UIController.getInputTransaction())
         let inputtransaction = UIController.getInputTransaction();
-        console.log(inputtransaction);
 
-        UIController.displayTransaction(inputtransaction);
-        console.log("trans added to html");
-        console.log(inputtransaction['amount']);
-        ExpenseController.inputEntry(parseFloat(inputtransaction['amount']));
-
-        console.log("Expense:" + ExpenseController.getExpensesData());
-        UIController.updateBalance(ExpenseController.getTotalData());
+        if (inputtransaction['desc'] !== '' && !isNaN(parseFloat(inputtransaction['amount']))) {
+            UIController.displayTransaction(inputtransaction);
+            ExpenseController.inputEntry(parseFloat(inputtransaction['amount']));
+            UIController.updateBalance(ExpenseController.getTotalData());
+        }  
     }
 
     let init = () => {
         console.log('Initializing...')
         setupEventListeners(); 
-        console.log("transactionadded");
         UIController.currentMonth();
     }
 
