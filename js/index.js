@@ -86,9 +86,6 @@ let UIController = (() => {                         //this controller handles th
 /* The Main Controller of the JS file */
 ((MainController) => {
 
-    let setupEventListeners = () => {
-        document.querySelector('.btn-submit').addEventListener('click', addTransaction)
-    };
     let addTransaction = () => {
         let inputtransaction = UIController.getInputTransaction();
 
@@ -101,10 +98,9 @@ let UIController = (() => {                         //this controller handles th
     }
 
     let init = () => {
-        console.log('Initializing...')
-        setupEventListeners(); 
+        console.log('Initializing...');
+        document.querySelector('.btn-submit').addEventListener('click', addTransaction);
         UIController.currentMonth();
     }
-
     init();
 })(UIController, TransactionController);
