@@ -3,8 +3,8 @@ let ExpenseController = (() => {                    //this controller handles th
 
     return {
         inputEntry(userInput) {
-            expenses += userInput['amount'];
-            total -= userInput['amount']
+            expenses += parseFloat(userInput);
+            total -= parseFloat(userInput)
         },
 
         getExpensesData() {return expenses;},
@@ -18,7 +18,7 @@ let UIController = (() => {                         //this controller handles th
             return {
                 date: new Date().toLocaleDateString(),
                 desc: document.querySelector("#transaction-desc").value,
-                amount: document.querySelector("#transaction-amount").value
+                amount: parseFloat(document.querySelector("#transaction-amount").value)
             }
         },
 
@@ -37,27 +37,39 @@ let UIController = (() => {                         //this controller handles th
             let transactionHTML;
             transactionHTML = "<tr><td>" + transaction['date'] + "</td><td>" + transaction['desc'] + "</td><td>" + transaction['amount'] + "</td></tr>";
 
-            document.querySelector("#history-list").insertAdjacentHTML('afterbegin', transactionHTML);
+            document.querySelector("#history-list").insertAdjacentHTML('beforeend', transactionHTML);
+        },
+
+        updateBalance (total) {
+            document.querySelector("#month-balance").textContent = "$ " + total;
         }
+
 }})();
 
 /* The Main Controller of the JS file */
 ((MainController) => {
+
     let setupEventListeners = () => {
-        document.querySelector("#btn-submit").addEventListener('click', addTransaction())
+        document.querySelector('.btn-submit').addEventListener('click', addTransaction)
     };
     let addTransaction = () => {
+        console.log('Input after click event' + UIController.getInputTransaction())
         let inputtransaction = UIController.getInputTransaction();
         console.log(inputtransaction);
 
         UIController.displayTransaction(inputtransaction);
-        ExpenseController.inputEntry(inputtransaction);
-        //update balance
+        console.log("trans added to html");
+        console.log(inputtransaction['amount']);
+        ExpenseController.inputEntry(parseFloat(inputtransaction['amount']));
+
+        console.log("Expense:" + ExpenseController.getExpensesData());
+        UIController.updateBalance(ExpenseController.getTotalData());
     }
 
     let init = () => {
-        console.log('Initializing...');
-        setupEventListeners();
+        console.log('Initializing...')
+        setupEventListeners(); 
+        console.log("transactionadded");
         UIController.currentMonth();
     }
 
