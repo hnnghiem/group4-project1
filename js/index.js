@@ -3,11 +3,18 @@ let TransactionController = (() => {                    //this controller handle
 
     return {
         inputEntry(userInput) {
-            expenses += parseFloat(userInput);
-            total -= parseFloat(userInput)
+            if (userInput['transtype'] == 'expense') {
+                expenses += parseFloat(userInput['amount']);
+                total -= parseFloat(userInput['amount'])
+            }
+            if (userInput['transtype'] == 'income') {
+                income +=parseFloat(userInput['amount']);
+                total += parseFloat(userInput['amount'])
+            }
         },
 
         getExpensesData() {return expenses;},
+        getIncomeData() {return income;},
         getTotalData() {return total;}
     }
 })();
@@ -18,7 +25,8 @@ let UIController = (() => {                         //this controller handles th
             return {
                 date: new Date().toLocaleDateString(),
                 desc: document.querySelector("#transaction-desc").value,
-                amount: parseFloat(document.querySelector("#transaction-amount").value)
+                amount: parseFloat(document.querySelector("#transaction-amount").value),
+                transtype: document.forms.form1.type.value
             }
         },
 
@@ -81,9 +89,9 @@ let UIController = (() => {                         //this controller handles th
 
         if (inputtransaction['desc'] !== '' && !isNaN(parseFloat(inputtransaction['amount']))) {
             UIController.displayTransaction(inputtransaction);
-            TransactionController.inputEntry(parseFloat(inputtransaction['amount']));
+            TransactionController.inputEntry(inputtransaction);
             UIController.updateBalance(TransactionController.getTotalData());
-            UIController.chart(TransactionController.getExpensesData(),500)
+            UIController.chart(TransactionController.getExpensesData(),TransactionController.getIncomeData())
         }  
     }
 
